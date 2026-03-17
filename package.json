@@ -3,13 +3,14 @@
   "version": "0.1.0",
   "description": "Polastack Design System - UI components and design tokens for business applications",
   "type": "module",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/tkaneko-siracusa/DesignSystem.git"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
   },
   "sideEffects": [
     "**/*.css"

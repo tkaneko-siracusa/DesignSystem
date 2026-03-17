@@ -17,13 +17,7 @@ BtoB業務アプリケーション向けReactデザインシステム。
 
 ## インストール
 
-GitHub Packages からインストールします。
-
 ```bash
-# 1. .npmrc に GitHub Packages registry を設定
-echo "@polastack:registry=https://npm.pkg.github.com" >> .npmrc
-
-# 2. インストール
 pnpm add @polastack/design-system
 ```
 
@@ -154,4 +148,4 @@ pnpm size
 
 ## ライセンス
 
-UNLICENSED — 社内利用のみ
+MIT License
