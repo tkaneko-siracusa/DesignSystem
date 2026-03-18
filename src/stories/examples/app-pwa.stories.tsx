@@ -88,11 +88,13 @@ const activity = [
 ];
 
 type Page = 'home' | 'projects' | 'profile';
+type ProfileMenuItem = 'edit' | 'notifications' | 'appearance' | 'help' | null;
 
 /* ----- App ----- */
 
 function PWAApp() {
   const [page, setPage] = useState<Page>('home');
+  const [activeProfileItem, setActiveProfileItem] = useState<ProfileMenuItem>(null);
 
   const titles: Record<Page, string> = {
     home: 'Home',
@@ -129,7 +131,7 @@ function PWAApp() {
             <div className="p-4">
               {page === 'home' && <HomeContent />}
               {page === 'projects' && <ProjectsContent />}
-              {page === 'profile' && <ProfileContent />}
+              {page === 'profile' && <ProfileContent activeItem={activeProfileItem} onItemSelect={setActiveProfileItem} />}
             </div>
           </AppShellContent>
         </div>
@@ -308,14 +310,14 @@ function ProjectsContent() {
 
 /* ----- Profile ----- */
 
-const profileMenu = [
-  { label: 'Edit Profile', icon: 'M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7' },
-  { label: 'Notifications', icon: 'M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0' },
-  { label: 'Appearance', icon: 'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z' },
-  { label: 'Help & Support', icon: 'M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01' },
+const profileMenu: { key: ProfileMenuItem; label: string; icon: string }[] = [
+  { key: 'edit', label: 'Edit Profile', icon: 'M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7' },
+  { key: 'notifications', label: 'Notifications', icon: 'M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0' },
+  { key: 'appearance', label: 'Appearance', icon: 'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z' },
+  { key: 'help', label: 'Help & Support', icon: 'M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01' },
 ];
 
-function ProfileContent() {
+function ProfileContent({ activeItem, onItemSelect }: { activeItem: ProfileMenuItem; onItemSelect: (item: ProfileMenuItem) => void }) {
   return (
     <div className="flex flex-col gap-4">
       {/* Profile card */}
@@ -363,21 +365,29 @@ function ProfileContent() {
 
       {/* Menu */}
       <div className="flex flex-col gap-0.5">
-        {profileMenu.map((item) => (
-          <button
-            key={item.label}
-            type="button"
-            className="flex items-center gap-3 w-full px-3 py-2.5 text-left text-sm rounded-md hover:bg-[var(--color-surface-muted)] transition-colors"
-          >
-            <span className="text-[var(--color-on-surface-muted)]">
-              <Icon d={item.icon} size={18} />
-            </span>
-            <span>{item.label}</span>
-            <span className="ml-auto text-[var(--color-on-surface-muted)]">
-              <ChevronRightIcon />
-            </span>
-          </button>
-        ))}
+        {profileMenu.map((item) => {
+          const isActive = activeItem === item.key;
+          return (
+            <button
+              key={item.key}
+              type="button"
+              onClick={() => onItemSelect(isActive ? null : item.key)}
+              className={`flex items-center gap-3 w-full px-3 py-2.5 text-left text-sm rounded-md transition-colors ${
+                isActive
+                  ? 'bg-[var(--color-surface-accent)] text-[var(--color-on-surface-accent)] font-medium'
+                  : 'text-[var(--color-on-surface-secondary)] hover:bg-[var(--color-surface-muted)] hover:text-[var(--color-on-surface)]'
+              }`}
+            >
+              <span className={isActive ? 'text-[var(--color-on-surface-accent)]' : 'text-[var(--color-on-surface-muted)]'}>
+                <Icon d={item.icon} size={18} />
+              </span>
+              <span>{item.label}</span>
+              <span className={`ml-auto ${isActive ? 'text-[var(--color-on-surface-accent)]' : 'text-[var(--color-on-surface-muted)]'}`}>
+                <ChevronRightIcon />
+              </span>
+            </button>
+          );
+        })}
       </div>
 
       <Separator />
