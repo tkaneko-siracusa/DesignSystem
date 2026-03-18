@@ -105,7 +105,7 @@ AvatarImage.displayName = 'AvatarImage';
 
 export interface AvatarFallbackProps
   extends React.HTMLAttributes<HTMLSpanElement> {
-  /** String used to deterministically pick a fallback color. If omitted, uses neutral gray. */
+  /** String used to deterministically pick a fallback color. If omitted, a stable random color is assigned. */
   colorSeed?: string;
 }
 
@@ -114,12 +114,13 @@ export const AvatarFallback = React.forwardRef<
   AvatarFallbackProps
 >(({ className, colorSeed, ...props }, ref) => {
   const { imageLoaded, shape } = useAvatarContext();
+  const autoSeed = React.useId();
 
   if (imageLoaded) return null;
 
-  const colorClasses = colorSeed
-    ? FALLBACK_COLORS[stringToIndex(colorSeed, FALLBACK_COLORS.length)]
-    : 'bg-[var(--color-surface-muted)] text-[var(--color-on-surface-secondary)]';
+  const seed = colorSeed ?? autoSeed;
+  const colorClasses =
+    FALLBACK_COLORS[stringToIndex(seed, FALLBACK_COLORS.length)];
 
   return (
     <span

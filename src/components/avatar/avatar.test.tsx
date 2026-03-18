@@ -98,14 +98,14 @@ describe('Avatar', () => {
 
   /* ----- Colorful fallback ----- */
 
-  it('uses neutral gray when no colorSeed', () => {
+  it('uses colorful background even without colorSeed', () => {
     render(
       <Avatar>
         <AvatarFallback>AB</AvatarFallback>
       </Avatar>,
     );
     const fallback = screen.getByText('AB');
-    expect(fallback.className).toContain('bg-[var(--color-surface-muted)]');
+    expect(fallback.className).not.toContain('bg-[var(--color-surface-muted)]');
   });
 
   it('uses colorful background when colorSeed is provided', () => {
