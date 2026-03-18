@@ -261,7 +261,7 @@
   --color-tooltip-text: #ffffff;
   --color-skeleton: var(--color-neutral-200);
   /* Accent surface — for selected/active nav items, highlighted rows, etc. */
-  --color-surface-accent: var(--color-primary-50);
+  --color-surface-accent: #E4F5F1;
   --color-on-surface-accent: var(--color-primary-700);
 }
 
