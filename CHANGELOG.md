@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.13 (2026-03-19)
+
+- Redesign Spinner: segmented bar chase animation (Radix/Vercel inspired)
+
 ## 0.1.12 (2026-03-18)
 
 - Add accent surface tokens (`--color-surface-accent`, `--color-on-surface-accent`) for sidebar active states
