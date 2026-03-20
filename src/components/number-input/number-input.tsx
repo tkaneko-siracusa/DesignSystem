@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
+import { ChevronUp, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/cn';
 
 const numberInputVariants = cva(
@@ -170,18 +171,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
               className="flex flex-1 items-center justify-center px-1.5 text-[var(--color-on-surface-muted)] hover:bg-[var(--color-surface-muted)] disabled:opacity-30"
               aria-label="Increment"
             >
-              <svg
-                width="10"
-                height="10"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="m18 15-6-6-6 6" />
-              </svg>
+              <ChevronUp className="h-2.5 w-2.5" strokeWidth={2.5} />
             </button>
             <button
               type="button"
@@ -191,18 +181,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
               className="flex flex-1 items-center justify-center border-t border-[var(--color-border-input)] px-1.5 text-[var(--color-on-surface-muted)] hover:bg-[var(--color-surface-muted)] disabled:opacity-30"
               aria-label="Decrement"
             >
-              <svg
-                width="10"
-                height="10"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="m6 9 6 6 6-6" />
-              </svg>
+              <ChevronDown className="h-2.5 w-2.5" strokeWidth={2.5} />
             </button>
           </div>
         )}

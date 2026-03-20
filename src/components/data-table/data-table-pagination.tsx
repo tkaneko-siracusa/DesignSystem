@@ -1,5 +1,6 @@
 import * as React from 'react';
 import type { Table } from '@tanstack/react-table';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/cn';
 
 interface DataTablePaginationProps<TData> {
@@ -52,18 +53,7 @@ export function DataTablePagination<TData>({
             disabled={!table.getCanPreviousPage()}
             aria-label="Previous page"
           >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="m15 18-6-6 6-6" />
-            </svg>
+            <ChevronLeft className="h-4 w-4" />
           </button>
           <button
             className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-[var(--color-border-input)] bg-[var(--color-surface-raised)] transition-colors hover:bg-[var(--color-surface-sunken)] disabled:opacity-50 disabled:pointer-events-none"
@@ -71,18 +61,7 @@ export function DataTablePagination<TData>({
             disabled={!table.getCanNextPage()}
             aria-label="Next page"
           >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="m9 18 6-6-6-6" />
-            </svg>
+            <ChevronRight className="h-4 w-4" />
           </button>
         </div>
       </div>

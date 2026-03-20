@@ -1,6 +1,19 @@
 import React, { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import {
+  Home,
+  Folder,
+  Bell,
+  User,
+  ChevronRight,
+  CheckCircle,
+  Circle,
+  SquarePen,
+  BellRing,
+  Sun,
+  HelpCircle,
+} from 'lucide-react';
+import {
   AppShell,
   AppShellHeader,
   AppShellContent,
@@ -25,45 +38,6 @@ export default meta;
 type Story = StoryObj;
 
 /* ----- Icons ----- */
-
-const Icon = ({ d, size = 20 }: { d: string; size?: number }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d={d} />
-  </svg>
-);
-
-const HomeIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-    <polyline points="9 22 9 12 15 12 15 22" />
-  </svg>
-);
-
-const FolderIcon = () => <Icon d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2z" />;
-
-const BellIcon = () => <Icon d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0" size={18} />;
-
-const UserIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-    <circle cx="12" cy="7" r="4" />
-  </svg>
-);
-
-const ChevronRightIcon = () => <Icon d="m9 18 6-6-6-6" size={16} />;
-
-const CheckCircleIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-    <path d="m9 11 3 3L22 4" />
-  </svg>
-);
-
-const CircleIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="10" />
-  </svg>
-);
 
 /* ----- Mock Data ----- */
 
@@ -117,7 +91,7 @@ function PWAApp() {
                     <span className="font-semibold">Polastack</span>
                   </div>
                   <Button variant="ghost" size="icon" className="relative">
-                    <BellIcon />
+                    <Bell className="h-[18px] w-[18px]" />
                     <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-error-500" />
                   </Button>
                 </>
@@ -139,19 +113,19 @@ function PWAApp() {
 
       <BottomNavigation>
         <BottomNavigationItem
-          icon={<HomeIcon />}
+          icon={<Home className="h-5 w-5" />}
           label="Home"
           active={page === 'home'}
           onClick={() => setPage('home')}
         />
         <BottomNavigationItem
-          icon={<FolderIcon />}
+          icon={<Folder className="h-5 w-5" />}
           label="Projects"
           active={page === 'projects'}
           onClick={() => setPage('projects')}
         />
         <BottomNavigationItem
-          icon={<UserIcon />}
+          icon={<User className="h-5 w-5" />}
           label="Profile"
           active={page === 'profile'}
           onClick={() => setPage('profile')}
@@ -203,7 +177,7 @@ function HomeContent() {
             {tasks.slice(0, 4).map((t, i) => (
               <div key={i} className="flex items-center gap-3 py-1">
                 <span className={t.done ? 'text-success-500' : 'text-[var(--color-on-surface-muted)]'}>
-                  {t.done ? <CheckCircleIcon /> : <CircleIcon />}
+                  {t.done ? <CheckCircle className="h-4 w-4" /> : <Circle className="h-4 w-4" />}
                 </span>
                 <div className="flex-1 min-w-0">
                   <p className={`text-sm ${t.done ? 'line-through text-[var(--color-on-surface-muted)]' : ''}`}>
@@ -310,11 +284,11 @@ function ProjectsContent() {
 
 /* ----- Profile ----- */
 
-const profileMenu: { key: ProfileMenuItem; label: string; icon: string }[] = [
-  { key: 'edit', label: 'Edit Profile', icon: 'M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7' },
-  { key: 'notifications', label: 'Notifications', icon: 'M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0' },
-  { key: 'appearance', label: 'Appearance', icon: 'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z' },
-  { key: 'help', label: 'Help & Support', icon: 'M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01' },
+const profileMenu: { key: ProfileMenuItem; label: string; icon: React.ReactNode }[] = [
+  { key: 'edit', label: 'Edit Profile', icon: <SquarePen className="h-[18px] w-[18px]" /> },
+  { key: 'notifications', label: 'Notifications', icon: <BellRing className="h-[18px] w-[18px]" /> },
+  { key: 'appearance', label: 'Appearance', icon: <Sun className="h-[18px] w-[18px]" /> },
+  { key: 'help', label: 'Help & Support', icon: <HelpCircle className="h-[18px] w-[18px]" /> },
 ];
 
 function ProfileContent({ activeItem, onItemSelect }: { activeItem: ProfileMenuItem; onItemSelect: (item: ProfileMenuItem) => void }) {
@@ -379,11 +353,11 @@ function ProfileContent({ activeItem, onItemSelect }: { activeItem: ProfileMenuI
               }`}
             >
               <span className={isActive ? 'text-[var(--color-on-surface-accent)]' : 'text-[var(--color-on-surface-muted)]'}>
-                <Icon d={item.icon} size={18} />
+                {item.icon}
               </span>
               <span>{item.label}</span>
               <span className={`ml-auto ${isActive ? 'text-[var(--color-on-surface-accent)]' : 'text-[var(--color-on-surface-muted)]'}`}>
-                <ChevronRightIcon />
+                <ChevronRight className="h-4 w-4" />
               </span>
             </button>
           );

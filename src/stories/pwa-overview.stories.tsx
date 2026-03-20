@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { Home, List, Settings } from 'lucide-react';
 import { Button } from '../components/button';
 import { Toast, ToastProvider, ToastViewport } from '../components/toast/toast';
 import { ToastTitle, ToastDescription } from '../components/toast/toast';
@@ -13,27 +14,6 @@ import {
   BottomNavigationItem,
 } from '../components/bottom-navigation';
 import { OfflineIndicator } from '../components/offline-indicator';
-
-const HomeIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-    <polyline points="9 22 9 12 15 12 15 22" />
-  </svg>
-);
-
-const ListIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <line x1="8" x2="21" y1="6" y2="6" /><line x1="8" x2="21" y1="12" y2="12" /><line x1="8" x2="21" y1="18" y2="18" />
-    <line x1="3" x2="3.01" y1="6" y2="6" /><line x1="3" x2="3.01" y1="12" y2="12" /><line x1="3" x2="3.01" y1="18" y2="18" />
-  </svg>
-);
-
-const SettingsIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="3" />
-    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
-  </svg>
-);
 
 const meta: Meta = {
   title: 'PWA/Overview',
@@ -78,9 +58,9 @@ export const MobileAppShell: Story = {
 
       {/* Bottom Navigation */}
       <BottomNavigation>
-        <BottomNavigationItem icon={<HomeIcon />} label="ホーム" active />
-        <BottomNavigationItem icon={<ListIcon />} label="一覧" />
-        <BottomNavigationItem icon={<SettingsIcon />} label="設定" />
+        <BottomNavigationItem icon={<Home className="h-5 w-5" />} label="ホーム" active />
+        <BottomNavigationItem icon={<List className="h-5 w-5" />} label="一覧" />
+        <BottomNavigationItem icon={<Settings className="h-5 w-5" />} label="設定" />
       </BottomNavigation>
     </div>
   ),
@@ -102,7 +82,7 @@ export const TouchOptimizedButtons: Story = {
           <Button size="md">Medium</Button>
           <Button size="lg">Large</Button>
           <Button size="icon">
-            <HomeIcon />
+            <Home className="h-5 w-5" />
           </Button>
         </div>
       </div>

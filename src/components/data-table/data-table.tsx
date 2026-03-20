@@ -10,6 +10,7 @@ import {
   type RowSelectionState,
   type VisibilityState,
 } from '@tanstack/react-table';
+import { ChevronsUpDown } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import {
   Table,
@@ -143,22 +144,12 @@ export function DataTable<TData>({
                         header.column.columnDef.header,
                         header.getContext(),
                       )}
-                      <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
+                      <ChevronsUpDown
                         className={cn(
-                          'shrink-0',
+                          'h-3.5 w-3.5 shrink-0',
                           header.column.getIsSorted() ? 'opacity-100' : 'opacity-30',
                         )}
-                      >
-                        <path d="m7 15 5 5 5-5M7 9l5-5 5 5" />
-                      </svg>
+                      />
                     </button>
                   ) : (
                     flexRender(

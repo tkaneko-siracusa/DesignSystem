@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Menu } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { createContext } from '@/lib/create-context';
 import { useBreakpoint } from '@/hooks';
@@ -148,18 +149,7 @@ export const AppShellHeader = React.forwardRef<
           className="rounded-md p-1.5 hover:bg-[var(--color-surface-muted)] transition-colors touch:min-h-[--touch-target-min] touch:min-w-[--touch-target-min] flex items-center justify-center"
           aria-label="Open menu"
         >
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
+          <Menu className="h-5 w-5" />
         </button>
       )}
       {children}

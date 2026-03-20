@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { ChevronUp, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/cn';
 
 /* ----- StatCard ----- */
@@ -29,10 +30,10 @@ const TREND_STYLES = {
   neutral: 'text-[var(--color-on-surface-muted)]',
 } as const;
 
-const TREND_ICONS = {
-  up: 'M7 17l5-5 5 5',
-  down: 'M7 7l5 5 5-5',
-  neutral: '',
+const TREND_ICON_COMPONENTS = {
+  up: ChevronUp,
+  down: ChevronDown,
+  neutral: null,
 } as const;
 
 export const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
@@ -60,11 +61,10 @@ export const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
           <span className="text-xl sm:text-2xl font-bold tabular-nums">{value}</span>
           {trend && (
             <span className={cn('inline-flex items-center gap-0.5 text-xs font-medium', TREND_STYLES[direction])}>
-              {direction !== 'neutral' && (
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d={TREND_ICONS[direction]} />
-                </svg>
-              )}
+              {(() => {
+                const TrendIcon = TREND_ICON_COMPONENTS[direction];
+                return TrendIcon ? <TrendIcon className="h-3 w-3" strokeWidth={2.5} /> : null;
+              })()}
               {trend}
             </span>
           )}
