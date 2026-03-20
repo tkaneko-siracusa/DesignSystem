@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { ArrowDown } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { Spinner } from '@/components/spinner';
 
@@ -84,24 +85,12 @@ export const PullToRefresh = React.forwardRef<HTMLDivElement, PullToRefreshProps
             {isRefreshing ? (
               <Spinner size="sm" />
             ) : (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+              <ArrowDown
                 className={cn(
-                  'text-[var(--color-on-surface-muted)] transition-transform duration-normal',
+                  'h-5 w-5 text-[var(--color-on-surface-muted)] transition-transform duration-normal',
                   shouldTrigger && 'rotate-180 text-primary-500',
                 )}
-              >
-                <path d="M12 5v14" />
-                <path d="m19 12-7 7-7-7" />
-              </svg>
+              />
             )}
           </div>
         </div>

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import type { Column } from '@tanstack/react-table';
+import { ChevronsUpDown } from 'lucide-react';
 import { cn } from '@/lib/cn';
 
 interface DataTableColumnHeaderProps<TData, TValue>
@@ -29,28 +30,12 @@ export function DataTableColumnHeader<TData, TValue>({
       aria-label={`Sort by ${title}`}
     >
       {title}
-      <svg
-        width="14"
-        height="14"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+      <ChevronsUpDown
         className={cn(
-          'shrink-0 transition-opacity',
+          'h-3.5 w-3.5 shrink-0 transition-opacity',
           sorted ? 'opacity-100' : 'opacity-30',
         )}
-      >
-        {sorted === 'desc' ? (
-          <path d="m7 15 5 5 5-5M7 9l5-5 5 5" />
-        ) : sorted === 'asc' ? (
-          <path d="m7 15 5 5 5-5M7 9l5-5 5 5" />
-        ) : (
-          <path d="m7 15 5 5 5-5M7 9l5-5 5 5" />
-        )}
-      </svg>
+      />
       {sorted === 'asc' && (
         <span className="sr-only">sorted ascending</span>
       )}

@@ -1,6 +1,17 @@
 import React, { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import {
+  LayoutDashboard,
+  Folder,
+  Users,
+  FileText,
+  Settings,
+  Bell,
+  Search,
+  ChevronRight,
+  Activity,
+} from 'lucide-react';
+import {
   AppShell,
   AppShellSidebar,
   AppShellHeader,
@@ -31,48 +42,7 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj;
 
-/* ----- Icons (Lucide-style inline SVGs) ----- */
-
-const Icon = ({ d, size = 20 }: { d: string; size?: number }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d={d} />
-  </svg>
-);
-
-const LayoutDashboardIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="3" y="3" width="7" height="9" rx="1" />
-    <rect x="14" y="3" width="7" height="5" rx="1" />
-    <rect x="14" y="12" width="7" height="9" rx="1" />
-    <rect x="3" y="16" width="7" height="5" rx="1" />
-  </svg>
-);
-
-const FolderIcon = () => <Icon d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2z" size={18} />;
-const UsersIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-    <circle cx="9" cy="7" r="4" />
-    <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-  </svg>
-);
-const FileTextIcon = () => <Icon d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7zM14 2v4a2 2 0 0 0 2 2h4M10 13H8M16 17H8M14 9H8" size={18} />;
-const SettingsIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
-    <circle cx="12" cy="12" r="3" />
-  </svg>
-);
-const BellIcon = () => <Icon d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0" size={18} />;
-const SearchIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="11" cy="11" r="8" />
-    <path d="m21 21-4.3-4.3" />
-  </svg>
-);
-const ChevronRightIcon = () => <Icon d="m9 18 6-6-6-6" size={14} />;
-const ActivityIcon = () => <Icon d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2" size={18} />;
+/* ----- Icons ----- */
 
 /* ----- Navigation Config ----- */
 
@@ -83,15 +53,15 @@ interface NavItem {
 }
 
 const mainNav: NavItem[] = [
-  { label: 'Dashboard', icon: <LayoutDashboardIcon /> },
-  { label: 'Projects', icon: <FolderIcon />, badge: '12' },
-  { label: 'Members', icon: <UsersIcon /> },
-  { label: 'Activity', icon: <ActivityIcon />, badge: '3' },
-  { label: 'Documents', icon: <FileTextIcon /> },
+  { label: 'Dashboard', icon: <LayoutDashboard className="h-[18px] w-[18px]" /> },
+  { label: 'Projects', icon: <Folder className="h-[18px] w-[18px]" />, badge: '12' },
+  { label: 'Members', icon: <Users className="h-[18px] w-[18px]" /> },
+  { label: 'Activity', icon: <Activity className="h-[18px] w-[18px]" />, badge: '3' },
+  { label: 'Documents', icon: <FileText className="h-[18px] w-[18px]" /> },
 ];
 
 const bottomNav: NavItem[] = [
-  { label: 'Settings', icon: <SettingsIcon /> },
+  { label: 'Settings', icon: <Settings className="h-[18px] w-[18px]" /> },
 ];
 
 /* ----- Mock Data ----- */
@@ -137,7 +107,7 @@ function StandardApp() {
                 type="button"
                 className="flex w-full items-center gap-2 rounded-md border border-[var(--color-border-input)] bg-[var(--color-surface)] px-3 py-1.5 text-sm text-[var(--color-on-surface-muted)] transition-colors hover:bg-[var(--color-surface-muted)]"
               >
-                <SearchIcon />
+                <Search className="h-4 w-4" />
                 <span className="flex-1 text-left">Search...</span>
                 <kbd className="hidden sm:inline-flex h-5 items-center gap-0.5 rounded border border-[var(--color-border)] px-1.5 font-mono text-[10px] font-medium text-[var(--color-on-surface-muted)]">
                   ⌘K
@@ -211,7 +181,7 @@ function StandardApp() {
                       <p className="text-sm font-medium truncate">Tanaka Taro</p>
                       <p className="text-xs text-[var(--color-on-surface-muted)] truncate">tanaka@polastack.io</p>
                     </div>
-                    <ChevronRightIcon />
+                    <ChevronRight className="h-3.5 w-3.5" />
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent side="right" align="end" className="w-56">
@@ -240,7 +210,7 @@ function StandardApp() {
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Button variant="ghost" size="icon" className="relative">
-                      <BellIcon />
+                      <Bell className="h-[18px] w-[18px]" />
                       <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-error-500" />
                     </Button>
                   </TooltipTrigger>

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { Search } from 'lucide-react';
 import {
   EmptyState,
   EmptyStateIcon,
@@ -20,17 +21,7 @@ export const Default: Story = {
   render: () => (
     <EmptyState className="w-96">
       <EmptyStateIcon>
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <circle cx="11" cy="11" r="8" />
-          <path d="m21 21-4.3-4.3" />
-        </svg>
+        <Search />
       </EmptyStateIcon>
       <EmptyStateTitle>No results found</EmptyStateTitle>
       <EmptyStateDescription>

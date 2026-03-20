@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
+import { X } from 'lucide-react';
 import { cn } from '@/lib/cn';
 
 /* ----- FilterBar ----- */
@@ -75,18 +76,7 @@ export const FilterChip = React.forwardRef<HTMLSpanElement, FilterChipProps>(
           className="ml-0.5 rounded-full p-0.5 hover:bg-black/10 transition-colors"
           aria-label={`Remove ${label} filter`}
         >
-          <svg
-            width="12"
-            height="12"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M18 6 6 18M6 6l12 12" />
-          </svg>
+          <X className="h-3 w-3" />
         </button>
       )}
     </span>

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import type { Table } from '@tanstack/react-table';
+import { Columns3 } from 'lucide-react';
 import { cn } from '@/lib/cn';
 
 interface DataTableToolbarProps<TData> {
@@ -56,18 +57,7 @@ export function DataTableToolbar<TData>({
             aria-label="Toggle columns"
             aria-expanded={showColumnMenu}
           >
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M12 3v18M3 12h18" />
-            </svg>
+            <Columns3 className="h-3.5 w-3.5" />
             Columns
           </button>
 
