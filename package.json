@@ -6,7 +6,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tkaneko-siracusa/DesignSystem.git"
+    "url": "https://github.com/siracusa-hq/DesignSystem.git"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
