@@ -55,7 +55,7 @@ export const SidebarNavGroup = React.forwardRef<
         defaultOpen={defaultOpen}
         open={controlledOpen}
         onOpenChange={onOpenChange}
-        className={cn('flex flex-col', className)}
+        className={cn('flex flex-col mt-4 first:mt-0', className)}
         {...props}
       >
         <CollapsiblePrimitive.Trigger className="group flex w-full items-center gap-2 rounded-md px-2.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-[var(--color-on-surface-muted)] transition-colors hover:text-[var(--color-on-surface-secondary)] hover:bg-[var(--color-surface-muted)]">
@@ -66,7 +66,7 @@ export const SidebarNavGroup = React.forwardRef<
           />
         </CollapsiblePrimitive.Trigger>
         <CollapsiblePrimitive.Content className="overflow-hidden data-[state=open]:animate-collapsible-down data-[state=closed]:animate-collapsible-up">
-          <div className="flex flex-col gap-0.5 pt-0.5">
+          <div className="flex flex-col gap-0.5 pt-0.5 pl-2">
             {children}
           </div>
         </CollapsiblePrimitive.Content>
