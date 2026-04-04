@@ -189,7 +189,7 @@ export const TabsList = React.forwardRef<
             className={cn(
               indicatorClass,
               hasInitialized
-                ? 'transition-all duration-normal ease-out'
+                ? 'transition-all duration-slow ease-out'
                 : 'transition-none',
             )}
             style={{
