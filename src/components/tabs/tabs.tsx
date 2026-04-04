@@ -4,20 +4,75 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/cn';
 import { createContext } from '@/lib/create-context';
 
-/* ----- Context for variant propagation ----- */
+/* ----- Types ----- */
 
 type TabsVariant = 'default' | 'underline';
 type TabsColorScheme = 'neutral' | 'colored';
 
+/* ----- Contexts ----- */
+
+/**
+ * Active value context — provided by Tabs root so that TabsList
+ * can position its indicator purely from React state.
+ */
+const [TabsActiveProvider, useTabsActive] = createContext<{
+  activeValue: string;
+}>('TabsActive');
+
+/**
+ * Variant / colorScheme context — provided by TabsList so that
+ * TabsTrigger can pick the right styles without prop drilling.
+ */
 const [TabsVariantProvider, useTabsVariant] = createContext<{
   variant: TabsVariant;
   colorScheme: TabsColorScheme;
-  listRef: React.RefObject<HTMLDivElement | null>;
 }>('TabsVariant');
+
+/**
+ * Trigger registration context — provided by TabsList so that
+ * each TabsTrigger can register its DOM node keyed by value.
+ */
+const [TabsTriggerMapProvider, useTabsTriggerMap] = createContext<{
+  register: (value: string, node: HTMLButtonElement | null) => void;
+}>('TabsTriggerMap');
 
 /* ----- Tabs Root ----- */
 
-export const Tabs = TabsPrimitive.Root;
+export interface TabsProps
+  extends React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root> {}
+
+export const Tabs = React.forwardRef<
+  React.ComponentRef<typeof TabsPrimitive.Root>,
+  TabsProps
+>(({ defaultValue, value, onValueChange, ...props }, ref) => {
+  const [internalValue, setInternalValue] = React.useState(
+    defaultValue ?? '',
+  );
+  const activeValue = value ?? internalValue;
+
+  const handleValueChange = React.useCallback(
+    (newValue: string) => {
+      if (value === undefined) {
+        setInternalValue(newValue);
+      }
+      onValueChange?.(newValue);
+    },
+    [value, onValueChange],
+  );
+
+  return (
+    <TabsActiveProvider value={{ activeValue }}>
+      <TabsPrimitive.Root
+        ref={ref}
+        defaultValue={defaultValue}
+        value={value}
+        onValueChange={handleValueChange}
+        {...props}
+      />
+    </TabsActiveProvider>
+  );
+});
+Tabs.displayName = 'Tabs';
 
 /* ----- TabsList ----- */
 
@@ -41,111 +96,114 @@ export interface TabsListProps
   colorScheme?: TabsColorScheme;
 }
 
+interface IndicatorStyle {
+  width: number;
+  x: number;
+}
+
 export const TabsList = React.forwardRef<
   React.ComponentRef<typeof TabsPrimitive.List>,
   TabsListProps
 >(({ className, variant = 'default', colorScheme = 'neutral', children, ...props }, ref) => {
+  const { activeValue } = useTabsActive();
   const listRef = React.useRef<HTMLDivElement | null>(null);
-  const activeRef = React.useRef<HTMLButtonElement | null>(null);
-  const [, forceRender] = React.useState(0);
+  const triggerMapRef = React.useRef<Map<string, HTMLButtonElement>>(new Map());
+  const [hasInitialized, setHasInitialized] = React.useState(false);
+  const [indicator, setIndicator] = React.useState<IndicatorStyle>({
+    width: 0,
+    x: 0,
+  });
 
-  React.useEffect(() => {
-    const container = listRef.current;
-    if (!container) return;
-
-    const findActive = () => {
-      const active = container.querySelector<HTMLButtonElement>(
-        '[role="tab"][data-state="active"]',
-      );
-      if (active !== activeRef.current) {
-        activeRef.current = active;
-        forceRender((c) => c + 1);
+  const register = React.useCallback(
+    (value: string, node: HTMLButtonElement | null) => {
+      if (node) {
+        triggerMapRef.current.set(value, node);
+      } else {
+        triggerMapRef.current.delete(value);
       }
-    };
+    },
+    [],
+  );
 
-    findActive();
+  // Recalculate indicator position when activeValue changes
+  React.useEffect(() => {
+    const list = listRef.current;
+    const trigger = triggerMapRef.current.get(activeValue);
+    if (!list || !trigger) return;
 
-    const observer = new MutationObserver(findActive);
-    observer.observe(container, {
-      attributes: true,
-      subtree: true,
-      attributeFilter: ['data-state'],
+    const listRect = list.getBoundingClientRect();
+    const triggerRect = trigger.getBoundingClientRect();
+    const offsetLeft = variant === 'default' ? 4 : 0; // p-1 padding
+
+    setIndicator({
+      width: triggerRect.width,
+      x: triggerRect.left - listRect.left - offsetLeft,
     });
 
-    return () => observer.disconnect();
-  }, []);
+    if (!hasInitialized) setHasInitialized(true);
+  }, [activeValue, variant, hasInitialized]);
+
+  // Recalculate on resize
+  React.useEffect(() => {
+    const recalc = () => {
+      const list = listRef.current;
+      const trigger = triggerMapRef.current.get(activeValue);
+      if (!list || !trigger) return;
+
+      const listRect = list.getBoundingClientRect();
+      const triggerRect = trigger.getBoundingClientRect();
+      const offsetLeft = variant === 'default' ? 4 : 0;
+
+      setIndicator({
+        width: triggerRect.width,
+        x: triggerRect.left - listRect.left - offsetLeft,
+      });
+    };
+
+    window.addEventListener('resize', recalc);
+    return () => window.removeEventListener('resize', recalc);
+  }, [activeValue, variant]);
+
+  const indicatorClass =
+    variant === 'underline'
+      ? 'absolute bottom-0 left-0 h-0.5 bg-primary-400 pointer-events-none'
+      : colorScheme === 'colored'
+        ? 'absolute top-1 left-1 h-[calc(100%-8px)] rounded-md bg-primary-500 shadow-sm pointer-events-none'
+        : 'absolute top-1 left-1 h-[calc(100%-8px)] rounded-md bg-[var(--color-surface-raised)] shadow-sm pointer-events-none';
 
   return (
-    <TabsVariantProvider value={{ variant: variant!, colorScheme, listRef }}>
-      <TabsPrimitive.List
-        ref={(node) => {
-          listRef.current = node;
-          if (typeof ref === 'function') ref(node);
-          else if (ref) ref.current = node;
-        }}
-        className={cn(tabsListVariants({ variant }), className)}
-        {...props}
-      >
-        {children}
-        {activeRef.current && (
-          <TabsIndicator triggerRef={activeRef} />
-        )}
-      </TabsPrimitive.List>
+    <TabsVariantProvider value={{ variant: variant!, colorScheme }}>
+      <TabsTriggerMapProvider value={{ register }}>
+        <TabsPrimitive.List
+          ref={(node) => {
+            listRef.current = node;
+            if (typeof ref === 'function') ref(node);
+            else if (ref) ref.current = node;
+          }}
+          className={cn(tabsListVariants({ variant }), className)}
+          {...props}
+        >
+          {children}
+          <span
+            aria-hidden
+            className={cn(
+              indicatorClass,
+              hasInitialized
+                ? 'transition-all duration-normal ease-out'
+                : 'transition-none',
+            )}
+            style={{
+              width: indicator.width,
+              transform: `translateX(${indicator.x}px)`,
+              opacity: hasInitialized ? 1 : 0,
+            }}
+          />
+        </TabsPrimitive.List>
+      </TabsTriggerMapProvider>
     </TabsVariantProvider>
   );
 });
 TabsList.displayName = 'TabsList';
-
-/* ----- Active indicator (sliding animation) ----- */
-
-interface TabsIndicatorProps {
-  triggerRef: React.RefObject<HTMLButtonElement | null>;
-}
-
-function TabsIndicator({ triggerRef }: TabsIndicatorProps) {
-  const { variant, colorScheme, listRef } = useTabsVariant();
-  const [style, setStyle] = React.useState<React.CSSProperties>({
-    opacity: 0,
-  });
-
-  const update = React.useCallback(() => {
-    const trigger = triggerRef.current;
-    const list = listRef.current;
-    if (!trigger || !list) return;
-
-    const listRect = list.getBoundingClientRect();
-    const triggerRect = trigger.getBoundingClientRect();
-
-    const offsetLeft = variant === 'default' ? 4 : 0; // account for p-1 padding
-
-    setStyle({
-      width: triggerRect.width,
-      transform: `translateX(${triggerRect.left - listRect.left - offsetLeft}px)`,
-      opacity: 1,
-    });
-  }, [triggerRef, listRef, variant]);
-
-  React.useEffect(() => {
-    update();
-    window.addEventListener('resize', update);
-    return () => window.removeEventListener('resize', update);
-  }, [update]);
-
-  const indicatorClass =
-    variant === 'underline'
-      ? 'absolute bottom-0 left-0 h-0.5 bg-primary-400 transition-all duration-normal ease-out pointer-events-none'
-      : colorScheme === 'colored'
-        ? 'absolute top-1 left-1 h-[calc(100%-8px)] rounded-md bg-primary-500 shadow-sm transition-all duration-normal ease-out pointer-events-none'
-        : 'absolute top-1 left-1 h-[calc(100%-8px)] rounded-md bg-[var(--color-surface-raised)] shadow-sm transition-all duration-normal ease-out pointer-events-none';
-
-  return (
-    <span
-      aria-hidden
-      className={indicatorClass}
-      style={style}
-    />
-  );
-}
 
 /* ----- TabsTrigger ----- */
 
@@ -171,12 +229,18 @@ const getTabsTriggerVariantStyles = (
 export const TabsTrigger = React.forwardRef<
   React.ComponentRef<typeof TabsPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>
->(({ className, ...props }, ref) => {
+>(({ className, value, ...props }, ref) => {
   const { variant, colorScheme } = useTabsVariant();
+  const { register } = useTabsTriggerMap();
 
   return (
     <TabsPrimitive.Trigger
-      ref={ref}
+      ref={(node) => {
+        register(value, node);
+        if (typeof ref === 'function') ref(node);
+        else if (ref) ref.current = node;
+      }}
+      value={value}
       className={cn(
         tabsTriggerBase,
         getTabsTriggerVariantStyles(variant, colorScheme),
