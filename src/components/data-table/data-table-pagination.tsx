@@ -1,7 +1,13 @@
-import * as React from 'react';
 import type { Table } from '@tanstack/react-table';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/cn';
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from '@/components/select';
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
@@ -28,18 +34,21 @@ export function DataTablePagination<TData>({
     >
       <div className="flex items-center gap-2">
         <span className="hidden sm:inline">Rows per page</span>
-        <select
-          value={pageSize}
-          onChange={(e) => table.setPageSize(Number(e.target.value))}
-          className="h-8 rounded-md border border-[var(--color-border-input)] bg-[var(--color-surface-raised)] px-2 text-sm"
-          aria-label="Rows per page"
+        <Select
+          value={String(pageSize)}
+          onValueChange={(value) => table.setPageSize(Number(value))}
         >
-          {pageSizeOptions.map((size) => (
-            <option key={size} value={size}>
-              {size}
-            </option>
-          ))}
-        </select>
+          <SelectTrigger className="h-8 w-[4.5rem]" aria-label="Rows per page">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {pageSizeOptions.map((size) => (
+              <SelectItem key={size} value={String(size)}>
+                {size}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       <div className="flex items-center gap-4">

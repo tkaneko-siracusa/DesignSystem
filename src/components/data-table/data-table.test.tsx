@@ -209,8 +209,10 @@ describe('DataTable', () => {
       />,
     );
 
-    const select = screen.getByRole('combobox', { name: 'Rows per page' });
-    await user.selectOptions(select, '5');
+    const trigger = screen.getByRole('combobox', { name: 'Rows per page' });
+    await user.click(trigger);
+    const option = await screen.findByRole('option', { name: '5' });
+    await user.click(option);
     expect(screen.getByText('1-5 of 25')).toBeInTheDocument();
   });
 
