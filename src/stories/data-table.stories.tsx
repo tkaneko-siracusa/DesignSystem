@@ -131,6 +131,38 @@ export const FullFeatured: Story = {
   ),
 };
 
+export const WithStickyColumns: Story = {
+  render: () => {
+    const wideColumns: ColumnDef<User & { department: string; location: string; phone: string; joinDate: string }, unknown>[] = [
+      { accessorKey: 'name', header: 'Name', size: 150 },
+      { accessorKey: 'email', header: 'Email', size: 220 },
+      { accessorKey: 'role', header: 'Role', size: 120 },
+      { accessorKey: 'status', header: 'Status', size: 120 },
+      { accessorKey: 'department', header: 'Department', size: 150 },
+      { accessorKey: 'location', header: 'Location', size: 180 },
+      { accessorKey: 'phone', header: 'Phone', size: 160 },
+      { accessorKey: 'joinDate', header: 'Join Date', size: 140 },
+    ];
+    const wideData = users.slice(0, 10).map((u) => ({
+      ...u,
+      department: ['Engineering', 'Design', 'Marketing'][u.id % 3],
+      location: ['Tokyo', 'New York', 'London', 'Berlin'][u.id % 4],
+      phone: `+81-90-${String(u.id).padStart(4, '0')}-0000`,
+      joinDate: `2024-${String((u.id % 12) + 1).padStart(2, '0')}-01`,
+    }));
+    return (
+      <div style={{ maxWidth: 600 }}>
+        <DataTable
+          columns={wideColumns}
+          data={wideData}
+          stickyColumns={2}
+          aria-label="Users with sticky columns"
+        />
+      </div>
+    );
+  },
+};
+
 export const Empty: Story = {
   render: () => (
     <DataTable

@@ -191,7 +191,7 @@ export function FilterSelector({
                 type="checkbox"
                 checked={selected.includes(opt.id)}
                 onChange={(e) => onToggle(opt.id, e.target.checked)}
-                className="h-4 w-4"
+                className="h-4 w-4 cursor-pointer"
               />
               {opt.label}
             </label>
